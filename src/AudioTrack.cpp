@@ -87,10 +87,10 @@ AudioTrack::AudioTrack(AudioTrack&& other) noexcept {
     // Your code here...
     title = std::move(other.title);
     artists = std::move(other.artists);
-    duration_seconds = other.duration_seconds;
-    bpm = other.bpm;
-    this->waveform_data = other.waveform_data;
-    this->waveform_size = other.waveform_size;
+    duration_seconds = std:: move(other.duration_seconds);
+    bpm = std::move(other.bpm);
+    this->waveform_data = std::move(other.waveform_data);
+    this->waveform_size = std::move(other.waveform_size);
     other.waveform_data = nullptr;
     other.waveform_size = 0;
 }
@@ -108,10 +108,10 @@ AudioTrack& AudioTrack::operator=(AudioTrack&& other) noexcept{
     delete [] waveform_data;
     title = std::move(other.title);
     artists = std::move(other.artists);
-    duration_seconds = other.duration_seconds;
-    bpm = other.bpm;
-    waveform_data = other.waveform_data;
-    waveform_size = other.waveform_size;
+    duration_seconds = std::move(other.duration_seconds);
+    bpm = std::move(other.bpm);
+    waveform_data = std::move(other.waveform_data);
+    waveform_size = std::move(other.waveform_size);
     other.waveform_data = nullptr;
     other.waveform_size = 0;
     return *this;
