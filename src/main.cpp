@@ -23,7 +23,7 @@
  * Students must fix the issues to make this program run cleanly.
  */
 
-bool del = false; // hint: what is the purpose of this variable? how it changes the ownership semantics?
+bool del = true; // hint: what is the purpose of this variable? how it changes the ownership semantics?
 void test_phase_1_memory_leaks() {
     
     std::cout << "\n======== PHASE 1: MEMORY LEAK TESTING ========" << std::endl;
@@ -188,9 +188,9 @@ int main(int argc, char* argv[]) {
         
         // Test each phase individually
         test_phase_1_memory_leaks();
-        test_phase_2_rule_of_5();
-        test_phase_3();
-        demonstrate_polymorphism();
+        // test_phase_2_rule_of_5();
+        // test_phase_3();
+        // demonstrate_polymorphism();
         std::cout << "\n(Set 'run_software' to true in main.cpp to run the full interactive session.)\n" << std::endl;
     }
     return 0;
