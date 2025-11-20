@@ -37,6 +37,7 @@ public:
      * Think about ownership and resource management.
      * Is the default destructor sufficient here?
      */
+    
     ~PointerWrapper() {
     // TODO: Implement the destructor
     // Your code here...
@@ -66,7 +67,6 @@ public:
      * What should happen to the source wrapper after the move?
      */
     PointerWrapper(PointerWrapper&& other) noexcept  : ptr(other.ptr){
-        delete ptr;  //check if problem
         other.ptr=nullptr;
     }
 
@@ -79,7 +79,7 @@ public:
         if (this != &other){
             delete ptr;
             ptr=other.ptr;
-            delete other.ptr;  //check if problem
+            delete other.ptr;  
             other.ptr=nullptr;
         }
         return *this;
@@ -94,6 +94,9 @@ public:
      */
 
     T& operator*() const {
+        if (ptr == nullptr) {
+            throw std::runtime_error("Null pointer!");
+        }
         return *ptr;
     }
 
@@ -113,7 +116,10 @@ public:
      * @throws std::runtime_error if ptr is null
      */
     T* get() const {
-        return ptr; // Placeholder
+        if (ptr == nullptr) {
+            throw std::runtime_error("Null pointer!");
+        }
+        return ptr; 
     }
 
     // ========== OWNERSHIP MANAGEMENT ==========
@@ -136,9 +142,9 @@ public:
      */
     void reset(T* new_ptr) {
         if(ptr!=new_ptr){
-            ptr=new_ptr;
+            delete ptr;
         }
-        
+        ptr=new_ptr;
     }
 
     // ========== UTILITY FUNCTIONS ==========

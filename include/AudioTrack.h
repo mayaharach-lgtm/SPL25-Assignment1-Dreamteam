@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 #include "PointerWrapper.h"
 #include <memory>
