@@ -8,10 +8,13 @@ Playlist::Playlist(const std::string& name)
 }
 // TODO: Fix memory leaks!
 // Students must fix this in Phase 1
+
+//IMPLEMENT RULE OF 3? 
 Playlist::~Playlist() {
     PlaylistNode* curr=head;
     while(curr!=nullptr){
         PlaylistNode* next=curr->next;
+        delete curr->track;
         delete curr;
         curr=next;
     }
@@ -55,6 +58,7 @@ void Playlist::remove_track(const std::string& title) {
         } else {
             head = current->next;
         }
+        delete current->track;
         delete current;
         track_count--;
         std::cout << "Removed '" << title << "' from playlist" << std::endl;
