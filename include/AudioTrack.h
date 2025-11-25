@@ -65,6 +65,13 @@ public:
      */
     AudioTrack& operator=(AudioTrack&& other) noexcept;
 
+     /**
+     * Sets new bpm for track
+     * MP3 uses bpm, WAV uses bpm, etc.
+     */
+    void set_bpm(int bpm);
+
+
     // ========== VIRTUAL FUNCTIONS FOR POLYMORPHISM ==========
 
     /**

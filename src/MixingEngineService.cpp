@@ -114,7 +114,18 @@ void MixingEngineService::displayDeckStatus() const {
  */
 bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack>& track) const {
     // Your implementation here
-    return false; // Placeholder
+    bool canmixtracks=false;
+    if(decks[active_deck]!=nullptr){
+        if(track){
+            int newtrackbpm=track.get()->get_bpm();
+            int currtrackbpm=decks[active_deck]->get_bpm();
+            int sub= std::abs(newtrackbpm-currtrackbpm);
+            if(sub<=bpm_tolerance){
+                canmixtracks=true;
+            }
+        }
+    }
+    return canmixtracks;
 }
 
 /**
@@ -122,5 +133,13 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack>& track
  * @param track: Track to synchronize with active deck
  */
 void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack>& track) const {
-    // Your implementation here
+    if(decks[active_deck]!=nullptr){
+        if(track){
+            int newtrackbpm=track.get()->get_bpm();
+            int currtrackbpm=decks[active_deck]->get_bpm();
+            int avgbpm= (newtrackbpm+currtrackbpm)/2;
+            track.get()->set_bpm(avgbpm);
+             std::cout<<"[Sync BPM] Syncing BPM from" <<currtrackbpm <<"to" << newtrackbpm;
+        }
+    }
 }

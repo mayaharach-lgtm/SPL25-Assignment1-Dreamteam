@@ -110,6 +110,10 @@ AudioTrack& AudioTrack::operator=(AudioTrack&& other) noexcept {
     return *this;
 }
 
+void AudioTrack::set_bpm(int newbpm){
+    bpm=newbpm;
+}
+
 void AudioTrack::get_waveform_copy(double* buffer, size_t buffer_size) const {
     if (buffer && waveform_data && buffer_size <= waveform_size) {
         std::memcpy(buffer, waveform_data, buffer_size * sizeof(double));
