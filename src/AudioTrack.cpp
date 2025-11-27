@@ -5,7 +5,7 @@
 
 AudioTrack::AudioTrack(const std::string& title, const std::vector<std::string>& artists, 
                       int duration, int bpm, size_t waveform_samples)
-    : title(title), artists(artists), duration_seconds(duration), bpm(bpm), waveform_data(new double[waveform_samples]),
+    : title(title), artists(artists), duration_seconds(duration), bpm(bpm), waveform_data(nullptr),
       waveform_size(waveform_samples) {
 
     // Generate some dummy waveform data for testing

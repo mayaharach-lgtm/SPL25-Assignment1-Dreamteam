@@ -12,7 +12,7 @@ DJControllerService::DJControllerService(size_t cache_size)
 int DJControllerService::loadTrackToCache(AudioTrack& track) {
     //HIT
     if(cache.contains(track.get_title())){
-        cache.get(track.get_title()); //ID is title?
+        cache.get(track.get_title());
         return 1;
     }
 

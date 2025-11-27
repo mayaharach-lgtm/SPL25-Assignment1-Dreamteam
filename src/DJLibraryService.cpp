@@ -8,7 +8,7 @@
 
 
 DJLibraryService::DJLibraryService(const Playlist& playlist) 
-    : playlist(playlist) {}
+    : playlist(playlist), library() {}
 
 
 //DELETE DISTRUCTOR? 
@@ -28,12 +28,10 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
         AudioTrack* track=nullptr;
         if(info.type== "MP3"){
             track = new MP3Track(info.title, info.artists, info.duration_seconds, info.bpm, info.extra_param1, info.extra_param2); 
-            std::cout<<"MP3Track created: "<< static_cast<MP3Track*>(track)->get_bitrate() << "kbps";
         }
         //else- WAV track
         else{
             track = new WAVTrack(info.title, info.artists, info.duration_seconds, info.bpm, info.extra_param1, info.extra_param2); 
-            std::cout<<" WAVTrack created: "<< static_cast<WAVTrack*>(track)->get_sample_rate() << "Hz/" << static_cast<WAVTrack*>(track)->get_bit_depth() <<"bit";
         }
             playlist.add_track(track);
             
