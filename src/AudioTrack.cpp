@@ -36,8 +36,7 @@ AudioTrack::~AudioTrack() {
     delete [] waveform_data;
 }
 
-AudioTrack::AudioTrack(const AudioTrack& other): title(other.title), artists(other.artists),duration_seconds(other.duration_seconds),bpm(other.bpm),waveform_data(new double[waveform_size]),waveform_size(other.waveform_size)
-{
+AudioTrack::AudioTrack(const AudioTrack& other): title(other.title),artists(other.artists),duration_seconds(other.duration_seconds),bpm(other.bpm),waveform_data(new double[other.waveform_size]), waveform_size(other.waveform_size){
     // TODO: Implement the copy constructor
     #ifdef DEBUG
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
