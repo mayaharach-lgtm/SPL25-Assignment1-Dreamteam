@@ -12,11 +12,10 @@ DJSession::DJSession(const std::string& name, bool play_all)
     : session_name(name), play_all(play_all) {
     std::cout << "DJ Session System initialized: " << session_name << std::endl;
 }
-
-
 DJSession::~DJSession() {
     std::cout << "Shutting down DJ Session System: " << session_name << std::endl;
 }
+
 
 // ========== CORE FUNCTIONALITY ==========
 bool DJSession::load_playlist(const std::string& playlist_name)  {

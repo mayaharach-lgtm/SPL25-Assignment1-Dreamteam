@@ -65,7 +65,11 @@ public:
      * @brief Destructor
      */
     ~DJSession();
-
+    DJSession(const DJSession& other) = delete;
+    DJSession& operator=(const DJSession& other) = delete;
+    DJSession(DJSession&& other) = delete;
+    DJSession& operator=(DJSession&& other) = delete;
+    
     // ========== ORCHESTRATION METHODS ==========
 
 

@@ -14,7 +14,7 @@ DJLibraryService::DJLibraryService(const Playlist& playlist)
 //DELETE DISTRUCTOR? 
 //OR IMPLEMENT RULE OF 3? NADAV AND MAYA
 DJLibraryService::~DJLibraryService(){
-    for(int i=0;i<library.size();i++){
+    for(size_t i=0;i<library.size();i++){
         delete library[i];
     }
 }
@@ -85,8 +85,8 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
     std::cout<< "[INFO] Loading playlist:" << playlist_name;
     Playlist *newplaylist = new Playlist(playlist_name);
     int counter=0;
-    for(int index : track_indices){
-        if(0<=index && index<= library.size()){
+    for(size_t index : track_indices){
+        if(index<= library.size()){
             AudioTrack* track=library[index-1];
             PointerWrapper <AudioTrack> clone = track->clone();
             if(!clone){
@@ -96,7 +96,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
             clone.get()->load();
             clone.get()->analyze_beatgrid();
             // playlist.add_track(clone.get()); //notice maybe need to replace with row under - double delete
-            playlist.add_track(clone.release());
+            newplaylist->add_track(clone.release());
             counter++;
             std::cout<< " Added " <<clone.get()->get_title() <<" to playlist " <<playlist_name;
         }

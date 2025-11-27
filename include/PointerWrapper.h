@@ -78,8 +78,7 @@ public:
     PointerWrapper& operator=(PointerWrapper&& other) noexcept {
         if (this != &other){
             delete ptr;
-            ptr=other.ptr;
-            delete other.ptr;  
+            ptr=other.ptr; 
             other.ptr=nullptr;
         }
         return *this;

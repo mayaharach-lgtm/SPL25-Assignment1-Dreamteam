@@ -5,11 +5,8 @@
 
 AudioTrack::AudioTrack(const std::string& title, const std::vector<std::string>& artists, 
                       int duration, int bpm, size_t waveform_samples)
-    : title(title), artists(artists), duration_seconds(duration), bpm(bpm), 
+    : title(title), artists(artists), duration_seconds(duration), bpm(bpm), waveform_data(new double[waveform_samples]),
       waveform_size(waveform_samples) {
-
-    // Allocate memory for waveform analysis
-    waveform_data = new double[waveform_size];
 
     // Generate some dummy waveform data for testing
     std::random_device rd;
@@ -39,21 +36,14 @@ AudioTrack::~AudioTrack() {
     delete [] waveform_data;
 }
 
-AudioTrack::AudioTrack(const AudioTrack& other)
+AudioTrack::AudioTrack(const AudioTrack& other): title(other.title), artists(other.artists),duration_seconds(other.duration_seconds),bpm(other.bpm),waveform_data(new double[waveform_size]),waveform_size(other.waveform_size)
 {
     // TODO: Implement the copy constructor
     #ifdef DEBUG
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
     #endif
     // Your code here...
-
-    title=other.title;
-    artists = other.artists;
-    duration_seconds = other.duration_seconds;
-    bpm = other.bpm;
-    waveform_size = other.waveform_size;
-    waveform_data = new double[waveform_size];
-    for(int i=0;i<waveform_size;i++){
+    for(size_t i=0;i<waveform_size;i++){
       waveform_data[i]=other.waveform_data[i];  
     }
 }
@@ -72,7 +62,7 @@ AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
         bpm = other.bpm;
         waveform_size = other.waveform_size;
         waveform_data = new double[waveform_size];
-        for(int i=0;i<waveform_size;i++){
+        for(size_t i=0;i<waveform_size;i++){
             waveform_data[i]=other.waveform_data[i];  
         }
     }

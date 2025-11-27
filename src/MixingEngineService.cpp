@@ -6,13 +6,10 @@
 /**
  * TODO: Implement MixingEngineService constructor
  */
-MixingEngineService::MixingEngineService(): active_deck(0)
+MixingEngineService::MixingEngineService(): active_deck(0), auto_sync(false),bpm_tolerance(0)
 {
     decks[0]=nullptr;
     decks[1]=nullptr;
-    active_deck=0;
-    auto_sync=false;
-    bpm_tolerance=0;
     std::cout <<"[MixingEngineService] Initialized with 2 empty decks.";
 }
 
@@ -48,6 +45,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
             std::cout << "[ERROR] Track: " <<track.get_title() <<" failed to clone";
             return -1;  
         }
+        return 0; //deck 0  loaded
     }
 
     else{

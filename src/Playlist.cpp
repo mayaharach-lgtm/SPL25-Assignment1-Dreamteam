@@ -24,17 +24,56 @@ Playlist::~Playlist() {
     #endif
 }
 
-Playlist::Playlist(const Playlist& other){
-    head=other.head;
-    playlist_name=other.playlist_name;
-    track_count=other.track_count;
+Playlist::Playlist(const Playlist& other): head(nullptr),playlist_name(other.playlist_name),track_count(0){
+
+    if(other.head==nullptr){
+        return;
+    }
+    AudioTrack* cloned_head_track = other.head->track->clone().release();
+    head = new PlaylistNode(cloned_head_track);
+    track_count++;
+    PlaylistNode* current_source = other.head->next;
+    PlaylistNode* current_dest = head;
+    while (current_source != nullptr) {
+        AudioTrack* cloned_track = current_source->track->clone().release();
+        current_dest->next = new PlaylistNode(cloned_track);
+        current_dest = current_dest->next;
+        current_source = current_source->next;
+        track_count++;
+    }
 }
 
 Playlist& Playlist ::operator=(const Playlist& other){
     if (this != &other){
-        head=other.head;
-        playlist_name=other.playlist_name;
-        track_count=other.track_count;
+
+        PlaylistNode* curr = head;
+        while (curr != nullptr) {
+            PlaylistNode* next = curr->next;
+            delete curr->track; 
+            delete curr;
+            curr = next;
+        }
+
+    head = nullptr;
+    track_count = 0;
+    playlist_name = other.playlist_name;
+    
+    if (other.head != nullptr) {
+        AudioTrack* cloned_head_track = other.head->track->clone().release();
+        head = new PlaylistNode(cloned_head_track);
+        track_count++;
+        PlaylistNode* current_source = other.head->next;
+        PlaylistNode* current_dest = head;
+
+        while (current_source != nullptr) {
+            AudioTrack* cloned_track = current_source->track->clone().release();
+            current_dest->next = new PlaylistNode(cloned_track);
+            
+            current_dest = current_dest->next;
+            current_source = current_source->next;
+            track_count++;
+        }
+    }
     }
     return *this;
 }
