@@ -24,7 +24,7 @@ int DJControllerService::loadTrackToCache(AudioTrack& track) {
         return 0;  
     }
 
-    AudioTrack* clone_unwrapped=clone.get();
+    AudioTrack* clone_unwrapped=clone.release();
     if(clone_unwrapped==nullptr){
         throw std::runtime_error("Null pointer!");
     }

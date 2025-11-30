@@ -1,0 +1,12 @@
+
+============= RUNNING INTERACTIVE SOFTWARE =============
+Created playlist: 
+[MixingEngineService] Initialized with 2 empty decks.DJ Session System initialized: Interactive Session
+=== DJ Controller System ===
+Starting interactive DJ session...
+Loading configuration from: bin/dj_config.txt
+Parsed config file: 3 tracks found, 3 playlists found
+Configuration loaded successfully.
+BPM Tolerance: 10 BPM
+Auto Sync: enabled
+Cache Size: 3 slots

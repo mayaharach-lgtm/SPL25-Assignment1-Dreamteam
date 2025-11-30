@@ -61,7 +61,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     
     //Unload target deck if occupied
         if(decks[target_deck]!=nullptr){
-            // delete decks[target_deck];
+            delete decks[target_deck];
             decks[target_deck]=nullptr;
         }
         clone.get()->load();

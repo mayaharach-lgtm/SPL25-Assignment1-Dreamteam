@@ -13,6 +13,7 @@ AudioTrack::AudioTrack(const std::string& title, const std::vector<std::string>&
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dis(-1.0, 1.0);
 
+    waveform_data = new double[waveform_size];
     for (size_t i = 0; i < waveform_size; ++i) {
         waveform_data[i] = dis(gen);
     }

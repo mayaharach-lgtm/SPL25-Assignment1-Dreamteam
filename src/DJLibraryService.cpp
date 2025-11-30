@@ -34,6 +34,7 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
             track = new WAVTrack(info.title, info.artists, info.duration_seconds, info.bpm, info.extra_param1, info.extra_param2); 
         }
             playlist.add_track(track);
+            library.push_back(track);
             
     }
      std::cout<< "[INFO] Track library built:" << library_tracks.size() << "tracks loaded";
