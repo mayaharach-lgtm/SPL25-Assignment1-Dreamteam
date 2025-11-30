@@ -176,47 +176,37 @@ void DJSession::simulate_dj_performance() {
                         std::cout<< "\n–- Processing:" <<title<< "–-";
                         stats.tracks_processed++;
 
-
-                        //CHANGED AFTER LOTEM - REMEMBER TO DELETE 
-
                         //cache loading phase
-                        // int state=load_track_to_controller(title);
-                        // if(state==1){
-                        //     stats.cache_hits++;
-                        // }
-                        // else if(state==0){
-                        //     stats.cache_misses++;
-                        // }   
-                        // else{
-                        //     stats.cache_misses++;
-                        //     stats.cache_evictions++;
-                        // }
+                        int state=load_track_to_controller(title);
+                        if(state==1){
+                            stats.cache_hits++;
+                        }
+                        else if(state==0){
+                            stats.cache_misses++;
+                        }   
+                        else{
+                            stats.cache_misses++;
+                            stats.cache_evictions++;
+                        }
 
                         //Deck Loading Phase
 
-                        //CHANGED AFTER LOTEM - REMEMBER TO DELETE 
-
-                        // int state2=load_track_to_mixer_deck(title);
-                        // if(state2==1){
-                        //     stats.deck_loads_b++;
-                        //     stats.transitions++;
-                        // }
-                        // else if(state2==0){
-                        //     stats.deck_loads_a++;
-                        //     stats.transitions++;
-                        // }
-                        // else{
-                        //     std::cout<<"[ERROR] Track: " <<title<< " not loaded";
-                        //     stats.errors++;
-                        // }
-
                         int state2=load_track_to_mixer_deck(title);
-                        if(state2==-1){
+                        if(state2==1){
+                            stats.deck_loads_b++;
+                            stats.transitions++;
+                        }
+                        else if(state2==0){
+                            stats.deck_loads_a++;
+                            stats.transitions++;
+                        }
+                        else{
                             std::cout<<"[ERROR] Track: " <<title<< " not loaded";
+                            stats.errors++;
                         }
 
                     }
-                     print_session_summary();
+                    print_session_summary();
                     stats.tracks_processed = 0;
                     stats.cache_hits = 0;
                     stats.cache_misses = 0;

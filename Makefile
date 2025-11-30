@@ -118,9 +118,3 @@ examination:
 	./test.sh
 # Phony targets
 .PHONY: all debug sanitize release test test-leaks clean install-deps help examination
-
-# Rule for running tests (compiles test.cpp with project objects excluding main.o)
-tests: $(OBJECTS)
-	@echo "Compiling and running tests..."
-	$(CXX) $(CXXFLAGS) $(INCLUDES) src/test.cpp $(filter-out $(BIN_DIR)/main.o, $(OBJECTS)) -o $(BIN_DIR)/test_runner
-	./$(BIN_DIR)/test_runner

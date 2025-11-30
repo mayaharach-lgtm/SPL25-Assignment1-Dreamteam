@@ -10,9 +10,6 @@
 DJLibraryService::DJLibraryService(const Playlist& playlist) 
     : playlist(playlist), library() {}
 
-
-//DELETE DISTRUCTOR? 
-//OR IMPLEMENT RULE OF 3? NADAV AND MAYA
 DJLibraryService::~DJLibraryService(){
     for(size_t i=0;i<library.size();i++){
         delete library[i];
@@ -94,10 +91,10 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
             }
             clone.get()->load();
             clone.get()->analyze_beatgrid();
-            // playlist.add_track(clone.get()); //notice maybe need to replace with row under - double delete
+            std::string loaded_title = clone.get()->get_title();
             newplaylist->add_track(clone.release());
             counter++;
-            std::cout<< " Added " <<clone.get()->get_title() <<" to playlist " <<playlist_name;
+            std::cout<< " Added " << loaded_title <<" to playlist " <<playlist_name;
         }
         else{
             std::cout << "[WARNING] Invalid track index: " <<index;

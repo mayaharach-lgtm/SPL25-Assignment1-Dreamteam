@@ -40,8 +40,9 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     if(decks[0]==nullptr && decks[1]==nullptr){
         active_deck=0;
         PointerWrapper<AudioTrack> clone = track.clone();
-        decks[0]=clone.get();
-        if (!clone) {
+        decks[0]=clone.release();
+
+        if (!decks[0]) {
             std::cout << "[ERROR] Track: " <<track.get_title() <<" failed to clone";
             return -1;  
         }
@@ -74,7 +75,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
         }
     }
     decks[target_deck]=clone.release();
-    std::cout << "[Load Complete]" <<decks[active_deck]->get_title()<< "is now loaded on deck" <<target_deck;
+    std::cout << "[Load Complete]" <<decks[target_deck]->get_title()<< "is now loaded on deck" <<target_deck;
     
     //Instant Transition
     std::cout << "[Unload] Unloading previous deck" <<active_deck <<track.get_title();
