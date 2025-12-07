@@ -93,7 +93,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
             std::string loaded_title = clone.get()->get_title();
             playlist.add_track(clone.release());
             counter++;
-            std::cout << "Added '" << loaded_title << "' to playlist '" << playlist_name << "'" << std::endl;
         }
         else{
             std::cout << "[WARNING] Invalid track index: " <<index<<std::endl;
@@ -111,8 +110,8 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
 std::vector<std::string> DJLibraryService::getTrackTitles() const {
     std::vector<std::string> titles;
     std::vector<AudioTrack*> playlist_arr= playlist.getTracks();
-    for (AudioTrack* track : playlist_arr) {
-        titles.push_back(track->get_title());
+    for (auto it = playlist_arr.rbegin(); it != playlist_arr.rend(); ++it) {
+        titles.push_back((*it)->get_title());
     }
     return titles;
 }

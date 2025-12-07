@@ -67,7 +67,7 @@ MixingEngineService& MixingEngineService::operator=(const MixingEngineService& o
 int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     
         PointerWrapper<AudioTrack> clone = track.clone();
-        std::cout << "\n=== Loading Track to Deck =="<<std::endl;
+        std::cout << "\n=== Loading Track to Deck ==="<<std::endl;
 
         if (!clone) {
             std::cout << "[ERROR] Track: " <<track.get_title() <<" failed to clone"<<std::endl;
@@ -96,16 +96,16 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     }
     
     decks[target_deck]=clone.release();
-    std::cout << "[Load Complete]" <<decks[target_deck]->get_title()<< "is now loaded on deck" <<target_deck<<std::endl;
+    std::cout << "[Load Complete] '" << decks[target_deck]->get_title() << "' is now loaded on deck " << target_deck << std::endl;
     
     //Instant Transition
-    if(decks[active_deck] != nullptr)
-        std::cout << "[Unload] Unloading previous deck" <<active_deck <<track.get_title()<<std::endl;
+    // if(decks[active_deck] != nullptr)
+    //     std::cout << "[Unload] Unloading previous deck " <<active_deck << " " <<track.get_title()<<std::endl;
     // delete decks[active_deck];
     // decks[active_deck]=nullptr;
 
     active_deck=target_deck;
-    std::cout << "[Active Deck] Switched to deck" <<target_deck <<std::endl;
+    std::cout << "[Active Deck] Switched to deck " <<target_deck <<std::endl;
     return target_deck;
     
 }
@@ -154,6 +154,8 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack>& track
  * TODO: Implement sync_bpm method
  * @param track: Track to synchronize with active deck
  */
+        
+
 void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack>& track) const {
     if(decks[active_deck]!=nullptr){
         if(track){
@@ -161,7 +163,7 @@ void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack>& track) cons
             int currtrackbpm=decks[active_deck]->get_bpm();
             int avgbpm= (newtrackbpm+currtrackbpm)/2;
             track.get()->set_bpm(avgbpm);
-             std::cout<<"[Sync BPM] Syncing BPM from" <<currtrackbpm <<"to" << newtrackbpm<<std::endl;
+            std::cout << "[Sync BPM] Syncing BPM from " << newtrackbpm << " to " << avgbpm << std::endl;
         }
     }
 }

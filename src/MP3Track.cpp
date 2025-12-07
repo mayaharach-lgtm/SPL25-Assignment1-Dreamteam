@@ -18,7 +18,7 @@ void MP3Track::load() {
     // TODO: Implement MP3 loading with format-specific operations
     // NOTE: Use exactly 2 spaces before the arrow (→) character
     if(has_id3_tags)
-        std::cout << " → Processing ID3 metadata (artist info, album art, etc.)..."<<std::endl;
+        std::cout << "  → Processing ID3 metadata (artist info, album art, etc.)..."<<std::endl;
     else
         std::cout << "  →No ID3 tags found."<<std::endl;
     std::cout <<"  → Decoding MP3 frames..."<<std::endl;
