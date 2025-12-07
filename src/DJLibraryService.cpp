@@ -30,11 +30,10 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
         else{
             track = new WAVTrack(info.title, info.artists, info.duration_seconds, info.bpm, info.extra_param1, info.extra_param2); 
         }
-            playlist.add_track(track);
             library.push_back(track);
             
     }
-     std::cout<< "[INFO] Track library built:" << library_tracks.size() << "tracks loaded";
+     std::cout<< "[INFO] Track library built: " << library_tracks.size() << " tracks loaded"<<std::endl;
 }
 
 
@@ -78,30 +77,31 @@ AudioTrack* DJLibraryService::findTrack(const std::string& track_title) {
 
 void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name, 
                                                const std::vector<int>& track_indices) {
-    std::cout<< "[INFO] Loading playlist:" << playlist_name;
-    Playlist *newplaylist = new Playlist(playlist_name);
+    std::cout<< "[INFO] Loading playlist: " << playlist_name<<std::endl;
+    playlist=Playlist(playlist_name);
     int counter=0;
     for(size_t index : track_indices){
-        if(index<= library.size()){
+        if(index<= library.size() && index>=1){
             AudioTrack* track=library[index-1];
             PointerWrapper <AudioTrack> clone = track->clone();
             if(!clone){
-                std:: cout << "[ERROR] Track:" <<track->get_title() << "failed to clone";
+                std:: cout << "[ERROR] Track:" <<track->get_title() << "failed to clone"<<std::endl;
                 continue;
             }
             clone.get()->load();
             clone.get()->analyze_beatgrid();
             std::string loaded_title = clone.get()->get_title();
-            newplaylist->add_track(clone.release());
+            playlist.add_track(clone.release());
             counter++;
-            std::cout<< " Added " << loaded_title <<" to playlist " <<playlist_name;
+            std::cout << "Added '" << loaded_title << "' to playlist '" << playlist_name << "'" << std::endl;
         }
         else{
-            std::cout << "[WARNING] Invalid track index: " <<index;
+            std::cout << "[WARNING] Invalid track index: " <<index<<std::endl;
             continue;
         }
     }
-    std::cout <<"[INFO] Playlist loaded:" <<playlist_name <<counter <<"tracks)";
+    std::cout << "[INFO] Playlist loaded: " << playlist_name << " (" << counter << " tracks)" << std::endl;
+    
 }
 
 /**
@@ -111,7 +111,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
 std::vector<std::string> DJLibraryService::getTrackTitles() const {
     std::vector<std::string> titles;
     std::vector<AudioTrack*> playlist_arr= playlist.getTracks();
-    for(AudioTrack* track : playlist_arr){
+    for (AudioTrack* track : playlist_arr) {
         titles.push_back(track->get_title());
     }
     return titles;

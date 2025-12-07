@@ -66,12 +66,12 @@ int DJSession::load_track_to_controller(const std::string& track_name) {
     // Your implementation here
     AudioTrack* track= library_service.findTrack(track_name);
     if(track==nullptr){
-        std::cout << "[ERROR] Track: " << track_name <<" not found in library";
+        std::cout << "[ERROR] Track: " << track_name <<" not found in library"<<std::endl;
         stats.errors++;
         return 0;
     }
     else{
-        std::cout <<"[System] Loading track " << track_name <<" to controller...";
+        std::cout <<"[System] Loading track " << track_name <<" to controller..."<<std::endl;
         int state=controller_service.loadTrackToCache(*track);
         if(state==1){
             stats.cache_hits++;
@@ -83,6 +83,7 @@ int DJSession::load_track_to_controller(const std::string& track_name) {
             stats.cache_misses++;
             stats.cache_evictions++;
         }
+        controller_service.displayCacheStatus();
         return state;
     }
 }
@@ -97,7 +98,7 @@ bool DJSession::load_track_to_mixer_deck(const std::string& track_title) {
     std::cout << "[System] Delegating track transfer to MixingEngineService for: " << track_title << std::endl;
     AudioTrack* track = controller_service.getTrackFromCache(track_title);
     if(track==nullptr){
-        std::cout<<"[ERROR] Track: " <<track_title<< " not found in cache";
+        std::cout<<"[ERROR] Track: " <<track_title<< " not found in cache"<<std::endl;
         stats.errors++;
         return false;
     }
@@ -112,10 +113,11 @@ bool DJSession::load_track_to_mixer_deck(const std::string& track_title) {
             stats.transitions++;
         }
         else{
-            std::cout<<"[ERROR] Track: " <<track_title<< " not loaded";
+            std::cout<<"[ERROR] Track: " <<track_title<< " not loaded"<<std::endl;
             stats.errors++;
             return false;
         }
+        mixing_service.displayDeckStatus();
         return true;
     }
 }
@@ -151,13 +153,25 @@ void DJSession::simulate_dj_performance() {
     // Your implementation here
     if(play_all){
         std::vector<std::string> playlist_names;
-        std::map<std::string, std::vector<int>>::iterator iter = session_config.playlists.begin();
-        while (iter != session_config.playlists.end()) {
-            playlist_names.push_back(iter->first);
-            iter++;
+        for(auto const& pair : session_config.playlists) {
+            playlist_names.push_back(pair.first);
         }
+        
         std::sort(playlist_names.begin(), playlist_names.end());
+        for(const std::string& pl_name : playlist_names){
+            if(!load_playlist(pl_name)){
+                std::cout << "[ERROR] failed loading " << pl_name << std::endl;
+                continue;
+            }
 
+            for(std::string title : track_titles){
+                std::cout<< "\n-- Processing: " <<title<< " --"<<std::endl;
+                stats.tracks_processed++;
+                load_track_to_controller(title);
+                load_track_to_mixer_deck(title);
+            }
+            print_session_summary();
+        }
     //interactive mode
     }
     else{
@@ -169,56 +183,23 @@ void DJSession::simulate_dj_performance() {
             }
             else{
                 if(!load_playlist(input)){
-                    std:: cout <<"[ERROR] faild loading";
+                    std:: cout <<"[ERROR] faild loading"<<std::endl;
                 }
                 else{
                     for(std::string title: track_titles){
-                        std::cout<< "\n–- Processing:" <<title<< "–-";
+                        std::cout<< "\n–- Processing:" <<title<< "–-"<<std::endl;
                         stats.tracks_processed++;
 
-                        //cache loading phase
-                        int state=load_track_to_controller(title);
-                        if(state==1){
-                            stats.cache_hits++;
-                        }
-                        else if(state==0){
-                            stats.cache_misses++;
-                        }   
-                        else{
-                            stats.cache_misses++;
-                            stats.cache_evictions++;
-                        }
-
-                        //Deck Loading Phase
-
-                        int state2=load_track_to_mixer_deck(title);
-                        if(state2==1){
-                            stats.deck_loads_b++;
-                            stats.transitions++;
-                        }
-                        else if(state2==0){
-                            stats.deck_loads_a++;
-                            stats.transitions++;
-                        }
-                        else{
-                            std::cout<<"[ERROR] Track: " <<title<< " not loaded";
-                            stats.errors++;
-                        }
+                        load_track_to_controller(title);
+                        load_track_to_mixer_deck(title);
 
                     }
                     print_session_summary();
-                    stats.tracks_processed = 0;
-                    stats.cache_hits = 0;
-                    stats.cache_misses = 0;
-                    stats.cache_evictions = 0;
-                    stats.deck_loads_a = 0;
-                    stats.deck_loads_b = 0;
-                    stats.transitions = 0;
-                    stats.errors = 0;
+                    stats=SessionStats();
                 }
             }
         }
-    std::cout<< "Session cancelled by user or all playlistsplayed.";
+    std::cout<< "Session cancelled by user or all playlistsplayed."<<std::endl;
     }
     
 }
@@ -273,7 +254,7 @@ std::string DJSession::display_playlist_menu_from_config() {
     // Prompt for user selection with validation
     int selection = -1;
     while (true) {
-        std::cout << "\nSelect a playlist (1-" << playlist_names.size() << ", 0 to cancel): ";
+        std::cout << "\nSelect a playlist (1-" << playlist_names.size() << ", 0 to cancel): "<<std::endl;
         std::string input;
         
         if (!std::getline(std::cin, input)) {
